@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile           Profile?
+  nutritionEntries  NutritionEntry[]
+  exerciseEntries   ExerciseEntry[]
+  sleepEntries      SleepEntry[]
+  moodEntries       MoodEntry[]
+  
+  @@map("users")
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName String?
+  lastName  String?
+  age       Int?
+  weight    Float?
+  height    Float?
+  gender    String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("profiles")
+}
+
+model NutritionEntry {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date        DateTime @default(now())
+  mealType    String   // "breakfast", "lunch", "dinner", "snack"
+  foodName    String
+  calories    Float?
+  protein     Float?
+  carbs       Float?
+  fat         Float?
+  waterIntake Float?   // liters
+  notes       String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("nutrition_entries")
+}
+
+model ExerciseEntry {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date        DateTime @default(now())
+  exerciseType String  // "running", "gym", "yoga", "cycling", "swimming", "walking", "other"
+  duration    Int      // minutes
+  intensity   String?  // "low", "medium", "high"
+  caloriesBurned Float?
+  distance    Float?   // kilometers
+  notes       String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("exercise_entries")
+}
+
+model SleepEntry {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date         DateTime @default(now())
+  bedTime      DateTime
+  wakeTime     DateTime
+  duration     Float    // hours
+  quality      Int      // 1-10 scale
+  interruptions Int?    // number of times woke up
+  notes        String?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@map("sleep_entries")
+}
+
+model MoodEntry {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date        DateTime @default(now())
+  mood        Int      // 1-10 scale (1=very bad, 10=excellent)
+  stressLevel Int?     // 1-10 scale
+  energyLevel Int?     // 1-10 scale
+  category    String?  // "work", "relationships", "health", "other"
+  notes       String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("mood_entries")
+}
