@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: hyvinvointi-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: salasana123
+      POSTGRES_DB: hyvinvointi_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: hyvinvointi-backend
+    command: npm run dev
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: "postgresql://postgres:salasana123@db:5432/hyvinvointi_db?schema=public"
+      JWT_SECRET: "vaihda_tämä_turvalliseen"
+      PORT: 3001
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./hyvinvointi-frontend
+    container_name: hyvinvointi-frontend
+    command: npm start
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./hyvinvointi-frontend:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:

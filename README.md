@@ -1,154 +1,75 @@
-🩺 Hyvinvointisovellus
+# 💚 Terveysappi
 
-Moderni täysstack-sovellus, joka auttaa käyttäjiä seuraamaan hyvinvointiaan — ravintoa, liikuntaa, unta ja mielialaa.
-Sovellus koostuu Node.js + Express + Prisma + PostgreSQL -pohjaisesta backendistä ja React + TypeScript + TailwindCSS -frontendistä.
-Tietokanta toimii Dockerin kautta erillisessä PostgreSQL-kontissa.
+**Terveysappi** on kokonaisvaltainen hyvinvointisovellus, joka seuraa ravintoa, liikuntaa, unta ja mielialaa.  
+Sovellus sisältää modernin frontendin (React + TypeScript) ja tehokkaan backendin (Node.js + Express + Prisma + PostgreSQL).
 
-🚀 Teknologiat
-🔹 Backend
+---
 
-Node.js + Express
+## 🚀 Teknologiat
 
-Prisma ORM
+### Backend
+- Node.js + Express + TypeScript  
+- PostgreSQL + Prisma ORM  
+- JWT-autentikointi  
+- Kaikki CRUD-operaatiot (Ravinto, Liikunta, Uni, Mieliala)  
+- Täysin toimiva REST API  
 
-PostgreSQL (Docker-kontissa)
+### Frontend
+- React + TypeScript + Tailwind CSS  
+- Responsiivinen käyttöliittymä  
+- Kirjautuminen ja rekisteröityminen  
+- Dashboard viikkotilastoilla  
+- Toiminnallisuudet kaikille neljälle osa-alueelle  
 
-JWT-autentikointi
+### DevOps
+- Docker Compose (frontend + backend + PostgreSQL)  
+- Git versionhallinta ja GitHub repository  
+- Selkeä projektirakenne  
 
-CRUD-toiminnot kaikille neljälle osa-alueelle (ravinto, liikunta, uni, mieliala)
+---
 
-🔹 Frontend
+## 🧩 Projektirakenne
 
-React + TypeScript
+Terveysappi/
+│
+├── hyvinvointi-frontend/ # React + TypeScript frontend
+│ ├── src/
+│ ├── public/
+│ └── Dockerfile
+│
+├── prisma/ # Prisma skeema ja migraatiot
+├── src/ # Backendin lähdekoodi (Express)
+│ ├── controllers/
+│ ├── routes/
+│ ├── services/
+│ └── index.ts
+│
+├── .env # Ympäristömuuttujat
+├── docker-compose.yml # Yhdistää kaikki palvelut
+├── Dockerfile # Backendin Dockerfile
+└── README.md
 
-TailwindCSS
+yaml
+Kopioi koodi
 
-Axios API-kutsuihin
+---
 
-Reititys React Routerilla
+## ⚙️ Käyttöönotto
 
-Reaaliaikainen näkymä käyttäjän tiedoista
+### 1. Käynnistä sovellus Dockerilla
+```bash
+docker compose up --build
+Frontend: http://localhost:3000
+Backend (API): http://localhost:3001
 
-🔹 Muu
+2. Tarkista tietokanta
+bash
+Kopioi koodi
+docker compose exec db psql -U postgres -d hyvinvointi_db
+🧪 Testaus
+Luo uusi käyttäjä ja kirjaudu sisään
 
-Docker (PostgreSQL-tietokanta)
+Lisää ravinto-, liikunta-, uni- ja mielialamerkintöjä
 
-Git + GitHub versiohallinta
+Dashboard päivittyy automaattisesti
 
-VSCode kehitysympäristönä
-
-📂 Projektin rakenne
-terveysappi/
- ├─ hyvinvointi-frontend/        # React + TypeScript frontend
- │   ├─ src/
- │   │   ├─ components/          # Lomakkeet ja listakomponentit
- │   │   ├─ contexts/            # AuthContext yms.
- │   │   ├─ pages/               # Sivut (Ravinto, Liikunta, Uni, Mieliala)
- │   │   ├─ services/            # API-kutsut backendille
- │   │   ├─ App.tsx              # Sovelluksen pääkomponentti
- │   │   └─ index.tsx
- │   ├─ package.json
- │   └─ tailwind.config.js
- │
- ├─ prisma/                      # Prisma ORM -tietomalli ja migraatiot
- ├─ src/                         # Node/Express backend
- │   ├─ controllers/             # Reititysten logiikka
- │   ├─ routes/                  # API-reitit
- │   ├─ services/                # CRUD-logiikka
- │   ├─ middleware/              # Auth-middleware
- │   ├─ utils/                   # Apufunktiot
- │   └─ index.ts                 # Palvelimen aloituspiste
- │
- ├─ .env                         # Ympäristömuuttujat (ei GitHubiin)
- ├─ .gitignore
- ├─ package.json
- └─ tsconfig.json
-
-⚙️ Asennus ja käyttöönotto
-1️⃣ Käynnistä PostgreSQL Docker-kontti
-
-Jos ei vielä luotu:
-
-docker run --name hyvinvointi-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=salasana123 -e POSTGRES_DB=hyvinvointi_db -p 5433:5432 -d postgres
-
-
-Tarkista kontti:
-
-docker ps
-
-2️⃣ Backendin käynnistys
-cd terveysappi
-npm install
-npx prisma generate
-npx prisma migrate dev
-npm run dev
-
-
-Backend käynnistyy osoitteeseen:
-👉 http://localhost:3001
-
-3️⃣ Frontendin käynnistys
-cd hyvinvointi-frontend
-npm install
-npm start
-
-
-Frontend näkyy osoitteessa:
-👉 http://localhost:3000
-
-🔐 Toiminnot
-
-✅ Käyttäjärekisteröinti ja kirjautuminen (JWT)
-✅ Profiilin hallinta
-✅ Ravinto-, liikunta-, uni- ja mielialamerkintöjen lisääminen
-✅ CRUD (luonti, haku, muokkaus, poisto)
-✅ Tallennus PostgreSQL:ään
-✅ Tyylit TailwindCSS:llä
-✅ Datan tarkastelu ja muokkaus dashboardilla
-
-🧠 Tietokanta
-
-Tietokantataulut:
-
-users
-
-profiles
-
-nutrition_entries
-
-exercise_entries
-
-sleep_entries
-
-mood_entries
-
-🐳 Docker-yhteys
-
-Tietokanta on määritelty .env-tiedostossa näin:
-
-DATABASE_URL="postgresql://postgres:salasana123@localhost:5433/hyvinvointi_db?schema=public"
-JWT_SECRET="vaihda_tämä_turvalliseen_salaisuuteen"
-PORT=3001
-NODE_ENV=development
-
-🧩 Käyttöohje (kehittäjälle)
-
-Avaa kaksi terminaalia:
-
-Backend: npm run dev
-
-Frontend: npm start
-
-Kirjaudu sovellukseen selaimessa (localhost:3000/login)
-
-Lisää merkintöjä ja tarkista tietokanta Dockerin kautta:
-
-docker exec -it hyvinvointi-db psql -U postgres -d hyvinvointi_db
-
-💾 Versionhallinta
-git add .
-git commit -m "Lisätty frontend ja backend toiminnot"
-git push
-
-👨‍💻 Tekijä
-Jani Harju
